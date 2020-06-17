@@ -1,24 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { History } from 'history';
+import Loading from '@/components/Loading';
+import { promiseSerial, verifyRouterData, makeCancelable } from '@/utils/helpers';
 
-import { promiseSerial, verifyRouterData, makeCancelable } from 'utils/helpers';
-import loadingService from 'services/loadingService';
+interface Props {
+  promise: () => void | Array<Promise<Function>>;
+  children: React.ReactNode;
+  history: History;
+  guardData?: object;
+}
 
-const propTypes = {
-  promise: PropTypes.oneOfType([PropTypes.array, PropTypes.func]).isRequired,
-  children: PropTypes.node.isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-  guardData: PropTypes.objectOf(PropTypes.any),
-};
+type State = {
+  data: object;
+  resolvedSuccess: boolean;
+}
 
-const defaultProps = {
-  guardData: {},
-};
+class AsyncComponent extends React.Component<Props, State> {
+  chains;
 
-class AsyncComponent extends React.Component {
+  static defaultProps = {
+    guardData: {},
+  };
+
   constructor(props) {
     super(props);
-    this.chains = null;
     this.state = {
       data: {},
       resolvedSuccess: false,
@@ -57,7 +62,7 @@ class AsyncComponent extends React.Component {
     const { children, guardData } = this.props;
     const { data } = this.state;
 
-    return React.Children.map(children, child => (
+    return React.Children.map(children, (child: React.ReactElement) => (
       React.cloneElement(child, { guardData: { ...guardData, ...data } })
     ));
   }
@@ -68,11 +73,8 @@ class AsyncComponent extends React.Component {
       return this.renderChildren();
     }
 
-    return React.createElement(loadingService.get());
+    return (<Loading />);
   }
 }
-
-AsyncComponent.propTypes = propTypes;
-AsyncComponent.defaultProps = defaultProps;
 
 export default AsyncComponent;

@@ -16,8 +16,53 @@ yarn add react-router-guard
 ```
 
 ## Introduction
-React Router Guard is a fully solution for react router system, that provide react router config, route-based code splitting and authentication router for you, 
-react-router-guard helps you save a lot of time to setup a react router system, for more information please read [demo](https://codesandbox.io/s/5wr9ow6xlk) and [docs](/docs/guides/Content.md)
+React Router Guard is a router structure base on react-router-dom, when you install react-router-guard you don't need to install (react-router-dom, history, react-loadable) because it uses these packages as dependencies, it gives you some cool feature like router-config, code splitting, router authentication support, dynamic redirect for more information please read the [demo](https://codesandbox.io/s/5wr9ow6xlk) and [docs](/docs/guides/Content.md)
+
+## Usage
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+/*
+Because we don't need to install react-router-dom so you can use Link or NavLink from 'react-router-guard'
+import { RouterGuard, BrowserRouter, Link, NavLink, Redirect, Route, Router, Switch, history, withRouter, Loadable } from 'react-router-guard';
+*/
+import { RouterGuard } from 'react-router-guard';
+import config from './config';
+
+function App() {
+  return (
+    <div className="App">
+      <RouterGuard config={config} />
+    </div>
+  );
+}
+
+const rootElement = document.getElementById('root'); // eslint-disable-line
+ReactDOM.render(<App />, rootElement);
+```
+
+## API
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th style="width: 100px;">name</th>
+        <th style="width: 50px;">type</th>
+        <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+          <td>config</td>
+          <td>RouterGuardConfigProps[]</td>
+          <td>The config for render all route</td>
+      </tr>
+      <tr>
+          <td>history</td>
+          <td>createBrowserHistory()</td>
+          <td>To use custom history</td>
+      </tr>
+    </tbody>
+</table>
 
 ## Docs
 [Migrating from 1.x to 2.x](/docs/guides/Migrating.md)
